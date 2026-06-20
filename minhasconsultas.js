@@ -1,7 +1,3 @@
-// =========================================================
-// MINHAS CONSULTAS — lista o histórico de consultas agendadas
-// =========================================================
-
 function classeStatus(status) {
   switch (status) {
     case "AGENDADA": return "status-agendada";

@@ -12,7 +12,7 @@ db.init_app(app)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:5500"])
 migrate = Migrate(app, db)
 
-with app.app_context():
+with app.app_context(): #Cria as tabelas no banco de dados toda vez que não existi
     db.create_all()
 
 app.register_blueprint(agenda)
