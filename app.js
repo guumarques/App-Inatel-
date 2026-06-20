@@ -286,5 +286,5 @@ function agendarConsulta() {
 }
 
 function verConsultas() {
-  window.location.href = "consultas.html";
+  window.location.href = "minhasconsultas.html";
 }

@@ -14,10 +14,10 @@ const TOTAL_DIAS = 30;
 const hoje = new Date();
 const diaHoje = hoje.getDate();
 
-let dataSelecionada = null; //se nenhum dia for selecionado, usuário precisa escolher
+let dataSelecionada = null; // nenhum dia selecionado por padrão, usuário precisa escolher
 let horarioSelecionado = null;
 
-//oia fica desabilitado se já passou (antes de hoje) ou cai em sábado/domingo
+// Um dia fica desabilitado se já passou (antes de hoje) ou cai em sábado/domingo
 function diaEstaDesabilitado(dia) {
   if (dia < diaHoje) return true;
 
@@ -26,7 +26,7 @@ function diaEstaDesabilitado(dia) {
   return isFimDeSemana;
 }
 
-//configuração dos horários
+// configuração dos horários 
 function gerarHorarios() {
   const horarios = [];
   const inicio = 9 * 60;       // 09:00 em minutos
@@ -54,7 +54,6 @@ function montarLabelMes() {
 function renderCalendario() {
   const grid = document.getElementById("calendarGrid");
   grid.innerHTML = "";
-
 
   const primeiroDiaSemana = new Date(hoje.getFullYear(), hoje.getMonth(), 1).getDay();
 
@@ -131,13 +130,20 @@ async function confirmarConsulta() {
   }
 
   const consulta = {
+    id: `consulta-${Date.now()}`,
     psicologa: psicologa.nome,
+    psicologaEmail: psicologa.email,
+    psicologaIniciais: psicologa.iniciais,
     data: `${String(dataSelecionada).padStart(2, "0")}/${String(hoje.getMonth() + 1).padStart(2, "0")}/${hoje.getFullYear()}`,
     horario: horarioSelecionado,
     status: "AGENDADA"
   };
 
   localStorage.setItem("ultimaConsulta", JSON.stringify(consulta));
+
+  const historico = JSON.parse(localStorage.getItem("historicoConsultas") || "[]");
+  historico.push(consulta);
+  localStorage.setItem("historicoConsultas", JSON.stringify(historico));
 
   //Agendamento das notificações (30/15/5 min antes)
   const [horas, minutos] = horarioSelecionado.split(":").map(Number);

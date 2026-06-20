@@ -1,13 +1,6 @@
-/* =========================================================
-   AGENDAMENTO PSICOLÓGICO — estilos específicos da Tela 2
-   Reaproveita as variáveis e classes já definidas em style.css
-   (--cor-click, --cor-back1, --cor-back2, .container, .btn_agendar)
-   ========================================================= */
-
-/* ---------- Header da tela de agendamento (azul, com voltar) ---------- */
 #head_agendamento {
   display: grid;
-  grid-template-columns: 30px 1fr 30px; /* voltar | título | espaço vazio simétrico */
+  grid-template-columns: 30px 1fr 30px; 
   align-items: center;
   background-color: var(--cor-click);
   padding: 16px 18px;
@@ -38,7 +31,6 @@
   text-align: center;
 }
 
-/* ---------- Rótulo de seção (ex: "Psicóloga", "Selecionar Data") ---------- */
 .section-label {
   font-family: "Arimo", sans-serif;
   font-size: 10px;
@@ -49,7 +41,6 @@
   margin: 0 5px 12px;
 }
 
-/* ---------- Card da psicóloga ---------- */
 .psico-row {
   display: flex;
   align-items: center;
@@ -86,7 +77,6 @@
   margin-top: 2px;
 }
 
-/* ---------- Calendário (estilo calendário real, com cabeçalho de dias da semana) ---------- */
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -149,7 +139,6 @@
   cursor: not-allowed;
 }
 
-/* ---------- Horários (menu scrollável) ---------- */
 .times-grid {
   position: relative;
   display: flex;
@@ -208,12 +197,10 @@
   cursor: not-allowed;
 }
 
-/* ---------- Botão de largura total (reaproveita .btn_agendar) ---------- */
 .full-width {
   width: calc(100% - 10px);
 }
 
-/* Botão "Confirmar Consulta" — solto, sem container branco, com margem própria */
 .btn-confirmar-wrapper {
   margin: 0 25px 20px;
 }

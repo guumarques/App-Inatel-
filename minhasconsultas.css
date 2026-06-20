@@ -1,0 +1,103 @@
+.consulta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5px 12px;
+}
+
+.consulta-data-horario {
+  font-family: "Arimo", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--cor-text);
+}
+
+.consulta-status {
+  font-family: "Arimo", sans-serif;
+  font-size: 9.5px;
+  font-weight: bold;
+  color: white;
+  padding: 4px 11px;
+  border-radius: 20px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-agendada {
+  background-color: var(--cor-back2);
+}
+
+.status-realizada {
+  background-color: #888;
+}
+
+.status-cancelada {
+  background-color: #c0392b;
+}
+
+.consulta-divisor {
+  border: none;
+  border-top: 1px solid var(--cor-back1);
+  margin: 12px 5px;
+}
+
+.consulta-contato {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 5px;
+  font-family: "Arimo", sans-serif;
+  font-size: 11px;
+  color: #888;
+}
+
+.consulta-contato .icoMini {
+  font-size: 14px;
+  color: var(--cor-click);
+}
+
+.aviso-exemplo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFF8E1;
+  color: #8a6d00;
+  font-family: "Arimo", sans-serif;
+  font-size: 11px;
+  padding: 12px 15px;
+  margin: 20px;
+  border-radius: 10px;
+  line-height: 1.4;
+}
+
+.aviso-exemplo .icoMini {
+  font-size: 16px;
+  color: #d4a017;
+  flex-shrink: 0;
+}
+
+.sem-consultas {
+  text-align: center;
+  padding: 50px 25px;
+}
+
+.sem-consultas .icoVazio {
+  font-size: 46px;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.sem-consultas p {
+  font-family: "Arimo", sans-serif;
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.sem-consultas .btn_agendar {
+  position: static;
+  margin: 0 auto;
+  max-width: 220px;
+}
