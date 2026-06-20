@@ -1,23 +1,6 @@
-const CONSULTAS_EXEMPLO = [
-  {
-    id: "exemplo-1",
-    psicologa: "Ludimila Rocha da Silveira",
-    psicologaEmail: "ludimila@inatel.br",
-    psicologaIniciais: "LS",
-    data: "20/06/2026",
-    horario: "14:00",
-    status: "AGENDADA"
-  },
-  {
-    id: "exemplo-2",
-    psicologa: "Ludimila Rocha da Silveira",
-    psicologaEmail: "ludimila@inatel.br",
-    psicologaIniciais: "LS",
-    data: "10/06/2026",
-    horario: "10:00",
-    status: "REALIZADA"
-  }
-];
+// =========================================================
+// MINHAS CONSULTAS — lista o histórico de consultas agendadas
+// =========================================================
 
 function classeStatus(status) {
   switch (status) {
@@ -56,11 +39,18 @@ function criarCardConsulta(consulta) {
       <span class="material-symbols-outlined icoMini">mail</span>
       Em caso de dúvidas, contate ${consulta.psicologa.split(" ")[0]} pelo e-mail acima.
     </div>
+
+    <button class="btn_excluir" onclick="excluirConsulta('${consulta.id}')">
+      <span class="material-symbols-outlined icoMini">delete</span>
+      EXCLUIR CONSULTA
+    </button>
   `;
 
   return card;
 }
 
+// Estado vazio (sem nenhuma consulta agendada) — usado quando a API
+// não retorna nenhuma consulta ativa para este usuário.
 function criarEstadoVazio() {
   const wrap = document.createElement("div");
   wrap.classList.add("sem-consultas");
@@ -72,34 +62,74 @@ function criarEstadoVazio() {
   return wrap;
 }
 
-function criarAvisoExemplo() {
-  const aviso = document.createElement("div");
-  aviso.classList.add("aviso-exemplo");
-  aviso.innerHTML = `
-    <span class="material-symbols-outlined icoMini">info</span>
-    Estes são dados de exemplo. Agende uma consulta para ver suas informações reais aqui.
-  `;
-  return aviso;
+/**
+ * Exclui uma consulta pelo id (DELETE /api/consultas/<id>) e atualiza
+ * a tela na hora, sem reload — busca a lista atualizada da API depois.
+ */
+async function excluirConsulta(id) {
+  const confirmar = confirm("Deseja realmente excluir esta consulta?");
+  if (!confirmar) return;
+
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/consultas/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!resposta.ok) {
+      const dadosErro = await resposta.json().catch(() => ({}));
+      alert(dadosErro.erro || "Não foi possível excluir a consulta.");
+      return;
+    }
+
+    await renderConsultas(); // busca a lista atualizada da API e redesenha, sem reload
+  } catch (erro) {
+    console.error("Erro ao excluir consulta:", erro);
+    alert("Não foi possível conectar à API. Verifique se o backend está rodando.");
+  }
 }
 
-function renderConsultas() {
+/**
+ * Busca a lista de consultas na API e redesenha a tela.
+ * GET /api/consultas
+ */
+async function renderConsultas() {
   const lista = document.getElementById("listaConsultas");
-  lista.innerHTML = "";
+  lista.innerHTML = `<p style="text-align:center; color:#999; font-size:12px; padding:20px;">Carregando consultas...</p>`;
 
-  const dadosReais = localStorage.getItem("historicoConsultas");
-  const historicoSalvo = dadosReais ? JSON.parse(dadosReais) : [];
-  const exibindoExemplo = historicoSalvo.length === 0;
+  let consultasAtivas = [];
 
-  const historico = exibindoExemplo ? CONSULTAS_EXEMPLO : historicoSalvo;
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/consultas`);
 
-  if (exibindoExemplo) {
-    lista.appendChild(criarAvisoExemplo());
+    if (!resposta.ok) {
+      throw new Error(`A API respondeu com status ${resposta.status}`);
+    }
+
+    const todasConsultas = await resposta.json();
+    
+    // A exclusão na API é um "soft delete" (status vira CANCELADA, mas a
+    // linha continua existindo no banco) — escondemos essas da listagem.
+    consultasAtivas = todasConsultas.filter(c => c.status !== "CANCELADA");
+  } catch (erro) {
+    console.error("Erro ao buscar consultas:", erro);
+    lista.innerHTML = `
+      <div class="aviso-exemplo" style="background-color:#FDEDEC; color:#922b21;">
+        <span class="material-symbols-outlined icoMini" style="color:#c0392b;">error</span>
+        Não foi possível conectar à API. Verifique se o backend está rodando em ${API_BASE_URL}.
+      </div>
+    `;
+    return;
   }
 
-  // Mais recente primeiro 
-  const ordenado = [...historico].reverse();
+  lista.innerHTML = "";
 
-  ordenado.forEach(consulta => {
+  if (consultasAtivas.length === 0) {
+    lista.appendChild(criarEstadoVazio());
+    return;
+  }
+
+  // A API já retorna ordenado do mais recente para o mais antigo (criada_em desc)
+  consultasAtivas.forEach(consulta => {
     lista.appendChild(criarCardConsulta(consulta));
   });
 }

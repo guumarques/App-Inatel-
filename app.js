@@ -1,4 +1,4 @@
-  function openMenu() {
+function openMenu() {
     document.getElementById("menu_aba").style.display = "block"; 
   }
 
@@ -288,3 +288,74 @@ function agendarConsulta() {
 function verConsultas() {
   window.location.href = "minhasconsultas.html";
 }
+
+// ---------- Resumo de consultas no card da Tela 1 (CONSULTAS e PRÓXIMA) ----------
+
+// Converte os campos "data" (DD/MM/AAAA) e "horario" (HH:MM) de uma
+// consulta em um objeto Date, para podermos comparar e ordenar no tempo.
+function consultaParaData(consulta) {
+  const [dia, mes, ano] = consulta.data.split("/").map(Number);
+  const [horas, minutos] = consulta.horario.split(":").map(Number);
+  return new Date(ano, mes - 1, dia, horas, minutos);
+}
+
+// Formata a data/horário da próxima consulta para o badge:
+// "HOJE HH:MM" se for hoje, "DD/MM HH:MM" caso contrário.
+function formatarProxima(consulta) {
+  const dataConsulta = consultaParaData(consulta);
+  const hoje = new Date();
+
+  const ehHoje =
+    dataConsulta.getDate() === hoje.getDate() &&
+    dataConsulta.getMonth() === hoje.getMonth() &&
+    dataConsulta.getFullYear() === hoje.getFullYear();
+
+  if (ehHoje) {
+    return `HOJE ${consulta.horario}`;
+  }
+
+  const diaFormatado = String(dataConsulta.getDate()).padStart(2, "0");
+  const mesFormatado = String(dataConsulta.getMonth() + 1).padStart(2, "0");
+  return `${diaFormatado}/${mesFormatado} ${consulta.horario}`;
+}
+
+// Busca as consultas na API e atualiza os badges "CONSULTAS" e "PRÓXIMA"
+// no card de Apoio Psicológico da Tela 1.
+async function atualizarResumoConsultas() {
+  const numConsultas = document.getElementById("numConsultas");
+  const proximaConsulta = document.getElementById("proximaConsulta");
+
+  if (!numConsultas || !proximaConsulta) return; // elementos não existem nesta página
+
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/consultas`);
+
+    if (!resposta.ok) {
+      throw new Error(`A API respondeu com status ${resposta.status}`);
+    }
+
+    const todasConsultas = await resposta.json();
+    const agora = new Date();
+
+    // Só contam consultas com status AGENDADA, e cujo horário ainda não passou
+    const consultasFuturas = todasConsultas
+      .filter(c => c.status === "AGENDADA")
+      .map(c => ({ ...c, dataObj: consultaParaData(c) }))
+      .filter(c => c.dataObj >= agora)
+      .sort((a, b) => a.dataObj - b.dataObj); // mais próxima primeiro
+
+    numConsultas.innerText = consultasFuturas.length;
+
+    if (consultasFuturas.length > 0) {
+      proximaConsulta.innerText = formatarProxima(consultasFuturas[0]);
+    } else {
+      proximaConsulta.innerText = "NENHUMA";
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar resumo de consultas:", erro);
+    numConsultas.innerText = "—";
+    proximaConsulta.innerText = "INDISPONÍVEL";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", atualizarResumoConsultas);
