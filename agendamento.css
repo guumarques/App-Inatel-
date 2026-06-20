@@ -1,0 +1,225 @@
+/* =========================================================
+   AGENDAMENTO PSICOLÓGICO — estilos específicos da Tela 2
+   Reaproveita as variáveis e classes já definidas em style.css
+   (--cor-click, --cor-back1, --cor-back2, .container, .btn_agendar)
+   ========================================================= */
+
+/* ---------- Header da tela de agendamento (azul, com voltar) ---------- */
+#head_agendamento {
+  display: grid;
+  grid-template-columns: 30px 1fr 30px; /* voltar | título | espaço vazio simétrico */
+  align-items: center;
+  background-color: var(--cor-click);
+  padding: 16px 18px;
+}
+
+#back_btn {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#back_btn .icoG {
+  color: white;
+  font-size: 20px;
+}
+
+#head_agendamento_title {
+  font-family: "Arimo", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+/* ---------- Rótulo de seção (ex: "Psicóloga", "Selecionar Data") ---------- */
+.section-label {
+  font-family: "Arimo", sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--cor-click);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 5px 12px;
+}
+
+/* ---------- Card da psicóloga ---------- */
+.psico-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 5px 14px;
+}
+
+.psico-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--cor-click);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Arimo", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.psico-name {
+  font-family: "Arimo", sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--cor-text);
+}
+
+.psico-email {
+  font-family: "Arimo", sans-serif;
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ---------- Calendário (estilo calendário real, com cabeçalho de dias da semana) ---------- */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin: 0 5px 10px;
+  width: 100%;
+}
+
+.weekday-label {
+  text-align: center;
+  font-family: "Arimo", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin: 0 5px;
+  width: 100%;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  max-height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Arimo", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  background-color: transparent;
+  color: var(--cor-text);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin: 0 auto;
+}
+
+.cal-day.empty {
+  cursor: default;
+}
+
+.cal-day:hover:not(.disabled):not(.empty) {
+  background-color: var(--cor-back1);
+}
+
+.cal-day.selected {
+  background-color: var(--cor-click);
+  color: white;
+  font-weight: bold;
+}
+
+.cal-day.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ---------- Horários (menu scrollável) ---------- */
+.times-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 5px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+
+.times-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.times-grid::-webkit-scrollbar-track {
+  background: var(--cor-back1);
+  border-radius: 10px;
+}
+
+.times-grid::-webkit-scrollbar-thumb {
+  background: var(--cor-click);
+  border-radius: 10px;
+}
+
+.time-btn {
+  position: static;
+  top: auto;
+  transform: none;
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Arimo", sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  text-align: center;
+  background-color: var(--cor-back1);
+  color: var(--cor-click);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.time-btn:hover {
+  opacity: 0.85;
+}
+
+.time-btn.selected {
+  background-color: var(--cor-click);
+  color: white;
+}
+
+.time-btn.disabled {
+  background-color: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ---------- Botão de largura total (reaproveita .btn_agendar) ---------- */
+.full-width {
+  width: calc(100% - 10px);
+}
+
+/* Botão "Confirmar Consulta" — solto, sem container branco, com margem própria */
+.btn-confirmar-wrapper {
+  margin: 0 25px 20px;
+}
+
+.btn-confirmar-wrapper .btn_agendar {
+  position: static;
+  margin: 0;
+  width: 100%;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Confirmada — App Inatel</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="confirmacao.css">
+</head>
+<body>
+
+  <main>
+    <div class="success-wrap">
+      <div class="success-ring">
+        <span class="material-symbols-outlined icoCheck">check</span>
+      </div>
+      <div class="success-title">Consulta agendada<br>com sucesso!</div>
+    </div>
+
+    <div class="container">
+      <div class="section-label">Resumo da consulta</div>
+      <div class="info-row">
+        <span class="info-label">Psicóloga</span>
+        <span class="info-value" id="resumoPsicologa">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Data</span>
+        <span class="info-value" id="resumoData">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Horário</span>
+        <span class="info-value" id="resumoHorario">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="status-badge" id="resumoStatus">—</span>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="section-label">Notificações automáticas</div>
+      <div class="check-list">
+        <div class="check-item">
+          <div class="check-circle"><span class="material-symbols-outlined icoCheckSmall">check</span></div>
+          30 minutos antes
+        </div>
+        <div class="check-item">
+          <div class="check-circle"><span class="material-symbols-outlined icoCheckSmall">check</span></div>
+          15 minutos antes
+        </div>
+        <div class="check-item">
+          <div class="check-circle"><span class="material-symbols-outlined icoCheckSmall">check</span></div>
+          5 minutos antes
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-confirmar-wrapper">
+      <button class="btn_agendar" onclick="voltarAoInicio()">VOLTAR AO INÍCIO</button>
+    </div>
+  </main>
+
+  <script src="notificacao.js"></script>
+  <script src="confirmacao.js"></script>
+</body>
+</html>
